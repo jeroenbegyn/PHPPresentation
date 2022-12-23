@@ -157,4 +157,5 @@ class Animation {
 		$this->animEffectTransition = $animEffectTransition;
 		return $this;
 	}
+
 }

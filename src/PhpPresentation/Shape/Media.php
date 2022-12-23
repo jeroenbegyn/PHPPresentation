@@ -16,6 +16,8 @@
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation\Shape;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
@@ -26,4 +28,5 @@ use PhpOffice\PhpPresentation\Shape\Drawing\File;
  */
 abstract class Media extends File implements ComparableInterface
 {
+
 }

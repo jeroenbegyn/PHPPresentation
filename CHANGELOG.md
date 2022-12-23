@@ -1,10 +1,6 @@
 # Changelog
 
-## 0.10.0 - WIP (work in progress)
-
-### Features
-- PowerPoint2007 Writer : Support for Video-files - LA aug 2018
-- PowerPoint2007 Writer : Support for Audio-files- LA aug 2018
+## 0.10.0 - WIP
 
 ### Bugfix
 - PowerPoint2007 : Text is subscripted when set superscript to false - @qmachard GH-360

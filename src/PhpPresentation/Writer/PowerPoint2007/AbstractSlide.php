@@ -126,6 +126,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      *
      * @throws UndefinedChartTypeException
      */
+
     protected function writeShapeCollection(XMLWriter $objWriter, $shapes = [], &$shapeId = 1): void
     {
         if (0 == count($shapes)) {
@@ -1324,8 +1325,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->writeAttribute('uri', '{DAA4B4D4-6D71-4841-9C94-3DE7FCFB9230}');
             // p:nvPr > p:extLst > p:ext > p14:media
             $objWriter->startElement('p14:media');
-			$rIdNumber = substr($shape->relationId, 3 );  //number behind rId
-            $objWriter->writeAttribute('r:embed', 'rId' . ($rIdNumber + 1) );
+            $objWriter->writeAttribute('r:embed', $this->newRId($shape->relationId,1) );
             $objWriter->writeAttribute('xmlns:p14', 'http://schemas.microsoft.com/office/powerpoint/2010/main');
             // p:nvPr > p:extLst > p:ext > ##p14:media
             $objWriter->endElement();
@@ -1348,7 +1348,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         	
         	// bug fixed
         	$objWriter->writeAttribute('r:embed', $this->newRId($shape->relationId,1));
-        	//$objWriter->writeAttribute('r:embed', $shape->relationId);
         	
         	$objWriter->writeAttribute('xmlns:p14', 'http://schemas.microsoft.com/office/powerpoint/2010/main');
         	// p:nvPr > p:extLst > p:ext > ##p14:media
@@ -1372,7 +1371,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         } else {
         	$objWriter->writeAttribute('r:embed', $shape->relationId);
         }
-        
         if ($shape instanceof AbstractDrawingAdapter && $shape->getExtension() == 'svg') {
             // a:extLst
             $objWriter->startElement('a:extLst');
@@ -1465,6 +1463,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     
     
     /**
+
      * Write group.
      *
      * @param XMLWriter $objWriter XML Writer
