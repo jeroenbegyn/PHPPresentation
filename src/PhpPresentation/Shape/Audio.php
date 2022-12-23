@@ -15,9 +15,9 @@
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
-namespace PhpOffice\PhpPresentation\Shape;
+declare(strict_types=1);
 
-use PhpOffice\PhpPresentation\Shape\Drawing\File;
+namespace PhpOffice\PhpPresentation\Shape;
 
 /**
  * Audio element
@@ -36,13 +36,10 @@ class Audio extends Media
 		->setWidth(60);
 	}
 	
-	
-	
-	
 	/**
 	 * @return string
 	 */
-	public function getMimeType()
+	public function getMimeType(): string
 	{
 		switch (strtolower($this->getExtension())) {
 			case 'mp3':

@@ -10,19 +10,28 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
-namespace PhpOffice\PhpPresentation\Shape;
+declare(strict_types=1);
 
-use PhpOffice\PhpPresentation\Shape\Drawing\File;
+namespace PhpOffice\PhpPresentation\Exception;
 
-/**
- * Drawing element
- * @deprecated Drawing\File
- */
-class Drawing extends File
+class UnauthorizedMimetypeException extends PhpPresentationException
 {
+    /**
+     * @param string $expectedMimetype
+     * @param array<string> $authorizedMimetypes
+     */
+    public function __construct(string $expectedMimetype, array $authorizedMimetypes)
+    {
+        parent::__construct(sprintf(
+            'The mime type %s is not found in autorized values (%s)',
+            $expectedMimetype,
+            implode(', ', $authorizedMimetypes)
+        ));
+    }
 }

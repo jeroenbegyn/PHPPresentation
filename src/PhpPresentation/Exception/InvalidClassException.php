@@ -10,19 +10,24 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
-namespace PhpOffice\PhpPresentation\Shape;
+declare(strict_types=1);
 
-use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
+namespace PhpOffice\PhpPresentation\Exception;
 
-/**
- * Memory drawing shape
- * @deprecated Drawing\Gd
- */
-class MemoryDrawing extends Gd
+class InvalidClassException extends PhpPresentationException
 {
+    public function __construct(string $class, string $error)
+    {
+        parent::__construct(sprintf(
+            'The class %s is invalid (%s)',
+            $class,
+            $error
+        ));
+    }
 }

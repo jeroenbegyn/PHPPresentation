@@ -15,10 +15,10 @@
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation\Shape;
 
-use PhpOffice\PhpPresentation\ComparableInterface;
-use PhpOffice\PhpPresentation\Shape\Drawing\File;
 
 /**
  * Video element
@@ -40,7 +40,7 @@ class Video extends Media
 	/**
 	 * @return string
 	 */
-	public function getMimeType()
+	public function getMimeType(): string
 	{
 		switch (strtolower($this->getExtension())) {
 			case 'mp4':
