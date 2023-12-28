@@ -596,45 +596,8 @@ class PptSlides extends AbstractSlide
     			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn
     			$objWriter->startElement ( 'p:cTn' );
     			$objWriter->writeAttribute ( 'id', $idCount ++ );
-    			$objWriter->writeAttribute ( 'restart', 'whenNotActive' );
-    			$objWriter->writeAttribute ( 'fill', 'hold' );
-    			$objWriter->writeAttribute ( 'evtFilter', 'cancelBubble' );
-    			$objWriter->writeAttribute ( 'nodeType', 'interactiveSeq' );
-    			
-    			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:stCondLst
-    			$objWriter->startElement ( 'p:stCondLst' );
-    			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:stCondLst/p:cond
-    			$objWriter->startElement ( 'p:cond' );
-    			$objWriter->writeAttribute ( 'evt', 'onClick' );
-    			$objWriter->writeAttribute ( 'delay', '0' );
-    			
-    			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:stCondLst/p:cond/p:tgtEl
-    			$objWriter->startElement ( 'p:tgtEl' );
-    			
-    			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:stCondLst/p:cond/p:tgtEl/p:spTgt
-    			$objWriter->startElement ( 'p:spTgt' );
-    			$objWriter->writeAttribute ( 'spid', $shapeId );
-    			$objWriter->endElement ();
-    			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:stCondLst/p:cond/p:tgtEl
-    			$objWriter->endElement ();
-    			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:stCondLst/p:cond/
-    			$objWriter->endElement ();
-    			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:stCondLst
-    			$objWriter->endElement ();
-    			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/
-    			
-    			$objWriter->startElement ( 'p:endSync' );
-    			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:endSync/
-    			$objWriter->writeAttribute ( 'evt', 'end' );
-    			$objWriter->writeAttribute ( 'delay', 0 );
-    			
-    			$objWriter->startElement ( 'p:rtn' );
-    			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:endSync/p:rtn/
-    			$objWriter->writeAttribute ( 'val', 'all' );
-    			$objWriter->endElement ();
-    			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:endSync/
-    			$objWriter->endElement ();
-    			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/
+                $objWriter->writeAttribute ( 'dur', 'indefinite');
+                $objWriter->writeAttribute ( 'nodeType', 'mainSeq');
     			
     			$objWriter->startElement ( 'p:childTnLst' );
     			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par
@@ -647,7 +610,7 @@ class PptSlides extends AbstractSlide
     			$objWriter->startElement ( 'p:stCondLst' );
     			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:stCondLst/p:cond
     			$objWriter->startElement ( 'p:cond' );
-    			$objWriter->writeAttribute ( 'delay', '0' );
+    			$objWriter->writeAttribute ( 'delay', 'indefinite' );
     			$objWriter->endElement ();
     			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn\##p:stCondLst
     			$objWriter->endElement ();
@@ -682,7 +645,7 @@ class PptSlides extends AbstractSlide
     			$objWriter->startElement ( 'p:cTn' );
     			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn
     			$objWriter->writeAttribute ( 'id', $idCount ++ );
-    			$objWriter->writeAttribute ( 'presetID', '2' );
+    			$objWriter->writeAttribute ( 'presetID', '1' );
     			$objWriter->writeAttribute ( 'presetClass', 'mediacall' );
     			$objWriter->writeAttribute ( 'presetSubtype', '0' );
     			$objWriter->writeAttribute ( 'fill', 'hold' );
@@ -705,7 +668,7 @@ class PptSlides extends AbstractSlide
     			$objWriter->startElement ( 'p:cmd' );
     			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:cmd
     			$objWriter->writeAttribute ( 'type', 'call' );
-    			$objWriter->writeAttribute ( 'cmd', 'togglePause' );
+    			$objWriter->writeAttribute ( 'cmd', 'playFrom(0.0)' );
     			
     			$objWriter->startElement ( 'p:cBhvr' );
     			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:cmd/p:cBhvr
@@ -713,7 +676,7 @@ class PptSlides extends AbstractSlide
     			$objWriter->startElement ( 'p:cTn' );
     			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:cmd/p:cBhvr/p:cTn
     			$objWriter->writeAttribute ( 'id', $idCount ++ );
-    			$objWriter->writeAttribute ( 'dur', '1' );
+    			$objWriter->writeAttribute ( 'dur', '39024' );
     			$objWriter->writeAttribute ( 'fill', 'hold' );
     			$objWriter->endElement ();
     			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:cmd/p:cBhvr
@@ -767,19 +730,42 @@ class PptSlides extends AbstractSlide
     			$objWriter->endElement ();
     			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par
     			
+                $objWriter->startElement ( 'p:prevCondLst' );
+                // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst
+
+                $objWriter->startElement ( 'p:cond' );
+                // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst/p:cond
+                $objWriter->writeAttribute ( 'evt', 'onPrev' );
+                $objWriter->writeAttribute ( 'delay', '0' );
+
+                $objWriter->startElement ( 'p:tgtEl' );
+                // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst/p:cond/p:tgtEl
+                $objWriter->startElement ( 'p:sldTgt' );
+                // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst/p:cond/p:tgtEl/p:spTgt
+                //$objWriter->writeAttribute ( 'spid', $shapeId );
+                $objWriter->endElement ();
+                // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst/p:cond/p:tgtEl
+                $objWriter->endElement ();
+                // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst/p:cond
+
+                $objWriter->endElement ();
+                // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst
+
+                $objWriter->endElement ();
+                // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq
+
     			$objWriter->startElement ( 'p:nextCondLst' );
     			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst
     			
     			$objWriter->startElement ( 'p:cond' );
     			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst/p:cond
-    			$objWriter->writeAttribute ( 'evt', 'onClick' );
+    			$objWriter->writeAttribute ( 'evt', 'onNext' );
     			$objWriter->writeAttribute ( 'delay', '0' );
     			
     			$objWriter->startElement ( 'p:tgtEl' );
     			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst/p:cond/p:tgtEl
-    			$objWriter->startElement ( 'p:spTgt' );
+    			$objWriter->startElement ( 'p:sldTgt' );
     			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst/p:cond/p:tgtEl/p:spTgt
-    			$objWriter->writeAttribute ( 'spid', $shapeId );
     			$objWriter->endElement ();
     			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst/p:cond/p:tgtEl
     			$objWriter->endElement ();
@@ -824,6 +810,30 @@ class PptSlides extends AbstractSlide
     			
     			$objWriter->endElement ();
     			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:video/p:cMediaNode/p:cTn
+
+                $objWriter->startElement ( 'p:endCondLst' );
+                // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:video/p:cMediaNode/p:cTn/p:stCondLst
+
+                $objWriter->startElement ( 'p:cond' );
+                // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:video/p:cMediaNode/p:cTn/p:stCondLst/p:cond
+                $objWriter->writeAttribute ( 'evt', 'onStopAudio' );
+                $objWriter->writeAttribute ( 'delay', '0' );
+
+                $objWriter->startElement ( 'p:tgtEl' );
+                // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst/p:cond/p:tgtEl
+                $objWriter->startElement ( 'p:sldTgt' );
+                // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst/p:cond/p:tgtEl/p:spTgt
+                //$objWriter->writeAttribute ( 'spid', $shapeId );
+                $objWriter->endElement ();
+                // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst/p:cond/p:tgtEl
+                $objWriter->endElement ();
+                // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst/p:cond
+
+                $objWriter->endElement ();
+                // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:video/p:cMediaNode/p:cTn/p:stCondLst
+
+                $objWriter->endElement ();
+                // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:video/p:cMediaNode/p:cTn
     			
     			$objWriter->endElement ();
     			// p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:video/p:cMediaNode
