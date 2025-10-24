@@ -35,7 +35,8 @@ use PhpOffice\PhpPresentation\Shape\Drawing\File as ShapeDrawingFile;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd as ShapeDrawingGd;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
-use PhpOffice\PhpPresentation\Shape\Media;
+use PhpOffice\PhpPresentation\Shape\Video;
+use PhpOffice\PhpPresentation\Shape\Audio;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
@@ -1311,7 +1312,15 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttribute('name', $shape->getName());
         $objWriter->writeAttribute('descr', $shape->getDescription());
 
-        // a:hlinkClick
+        // a:hlinkClick for Audio or Video
+        if ($shape instanceof Audio || $shape instanceof Video) {
+            $objWriter->startElement('a:hlinkClick');
+            $objWriter->writeAttribute('r:id', '');
+            $objWriter->writeAttribute('action', 'ppaction://media');
+            $objWriter->endElement();
+        }
+
+        // a:hlinkClick for regular hyperlinks
         if ($shape->hasHyperlink()) {
             $this->writeHyperlink($objWriter, $shape);
         }
@@ -1323,6 +1332,21 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->startElement('a16:creationId');
             $objWriter->writeAttribute('xmlns:a16', 'http://schemas.microsoft.com/office/drawing/2014/main');
             $objWriter->writeAttribute('id', '{F8CFD691-5332-EB49-9B42-7D7B3DB9185D}');
+            $objWriter->endElement();
+            $objWriter->endElement();
+            $objWriter->endElement();
+        }
+
+        // a:extLst for Audio or Video (creation ID)
+        if ($shape instanceof Audio || $shape instanceof Video) {
+            $objWriter->startElement('a:extLst');
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('uri', '{FF2B5EF4-FFF2-40B4-BE49-F238E27FC236}');
+            $objWriter->startElement('a16:creationId');
+            $objWriter->writeAttribute('xmlns:a16', 'http://schemas.microsoft.com/office/drawing/2014/main');
+            //$objWriter->writeAttribute('id', '{' . $this->getGUID() . '}');
+            //$objWriter->writeAttribute('id', $this->getGUID());
+            $objWriter->writeAttribute('id', '{FF2B5EF4-FFF2-40B4-BE49-F238E27FC236}');
             $objWriter->endElement();
             $objWriter->endElement();
             $objWriter->endElement();
@@ -1349,8 +1373,28 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->writeAttribute('type', $shape->getPlaceholder()->getType());
             $objWriter->endElement();
         }
-        // @link : https://github.com/stefslon/exportToPPTX/blob/master/exportToPPTX.m#L2128
-        if ($shape instanceof Media) {
+        if ($shape instanceof Audio) {
+            // p:nvPr > a:audioFile
+            $objWriter->startElement('a:audioFile');
+            $objWriter->writeAttribute('r:link', $shape->relationId);
+            $objWriter->endElement();
+            // p:nvPr > p:extLst
+            $objWriter->startElement('p:extLst');
+            // p:nvPr > p:extLst > p:ext
+            $objWriter->startElement('p:ext');
+            $objWriter->writeAttribute('uri', '{DAA4B4D4-6D71-4841-9C94-3DE7FCFB9230}');
+            // p:nvPr > p:extLst > p:ext > p14:media
+            $objWriter->startElement('p14:media');
+            $objWriter->writeAttribute('xmlns:p14', 'http://schemas.microsoft.com/office/powerpoint/2010/main');
+            $objWriter->writeAttribute('r:embed', 'rId' . ((int) substr($shape->relationId, strlen('rId')) + 1));
+            // p:nvPr > p:extLst > p:ext > ##p14:media
+            $objWriter->endElement();
+            // p:nvPr > p:extLst > ##p:ext
+            $objWriter->endElement();
+            // p:nvPr > ##p:extLst
+            $objWriter->endElement();
+        }
+        if ($shape instanceof Video) {
             // p:nvPr > a:videoFile
             $objWriter->startElement('a:videoFile');
             $objWriter->writeAttribute('r:link', $shape->relationId);
@@ -1362,8 +1406,9 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->writeAttribute('uri', '{DAA4B4D4-6D71-4841-9C94-3DE7FCFB9230}');
             // p:nvPr > p:extLst > p:ext > p14:media
             $objWriter->startElement('p14:media');
-            $objWriter->writeAttribute('r:embed', 'rId' . ((int) substr($shape->relationId, strlen('rId')) + 1));
             $objWriter->writeAttribute('xmlns:p14', 'http://schemas.microsoft.com/office/powerpoint/2010/main');
+            // For video, the media embed is relationId - 1 (not + 1 like audio)
+            $objWriter->writeAttribute('r:embed', 'rId' . ((int) substr($shape->relationId, strlen('rId')) - 1));
             // p:nvPr > p:extLst > p:ext > ##p14:media
             $objWriter->endElement();
             // p:nvPr > p:extLst > ##p:ext
@@ -1380,7 +1425,16 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
         // a:blip
         $objWriter->startElement('a:blip');
-        $objWriter->writeAttribute('r:embed', $shape->relationId);
+        
+        // For audio/video shapes, use the thumbnail image relationId
+        if ($shape instanceof Audio || $shape instanceof Video) {
+            // Video: relationId + 1 (media=rId1, video=rId2, thumbnail=rId3)
+            // Audio: relationId + 2 (audio=rId1, media=rId2, icon=rId3)
+            $offset = $shape instanceof Video ? 1 : 2;
+            $objWriter->writeAttribute('r:embed', 'rId' . ((int) substr($shape->relationId, strlen('rId')) + $offset));
+        } else {
+            $objWriter->writeAttribute('r:embed', $shape->relationId);
+        }
 
         if ($shape instanceof AbstractDrawingAdapter && $shape->getExtension() == 'svg') {
             // a:extLst
@@ -1451,13 +1505,29 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // ##a:prstGeom
         $objWriter->endElement();
 
-        $this->writeFill($objWriter, $shape->getFill());
-        $this->writeBorder($objWriter, $shape->getBorder(), '');
-        $this->writeShadow($objWriter, $shape->getShadow());
+        // Don't write fill, border, shadow for Audio or Video shapes
+        if (!($shape instanceof Audio || $shape instanceof Video)) {
+            $this->writeFill($objWriter, $shape->getFill());
+            $this->writeBorder($objWriter, $shape->getBorder(), '');
+            $this->writeShadow($objWriter, $shape->getShadow());
+        }
 
         $objWriter->endElement();
 
         $objWriter->endElement();
+    }
+
+    /**
+     * Increase the relationId.
+     *
+     * @param string $currentRId
+     * @return string new $currentRId
+     */
+    private function newRId($currentRId, $increase) {
+        $prefix = "rId";
+        $nextnumber = substr($currentRId, strpos($currentRId, $prefix)+strlen($prefix));
+        $nextnumber += $increase;
+        return $prefix . $nextnumber;
     }
 
     /**
